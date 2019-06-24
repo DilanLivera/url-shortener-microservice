@@ -13,6 +13,6 @@ const urlSchema = new mongoose.Schema({
 });
 
 //create model
-const Url = mongoose.model('ToDo', urlSchema);
+const Url = mongoose.model('Url', urlSchema);
 
 module.exports = Url;
