@@ -10,7 +10,7 @@ router.get('/:shortUrl', (req, res) => {
     .then((url) => {
       if(url) {
         let { originalUrl } = url;      
-        res.redirect(`https://${originalUrl}`)
+        res.redirect(`${originalUrl}`)
       } else {
         res.status(404).json({"error":"invalid shortURL"});
       }
@@ -20,36 +20,40 @@ router.get('/:shortUrl', (req, res) => {
 
 router.post('/new', (req, res) => {
   let originalUrl = req.body.url;
-  let regex = new RegExp('(h|H){1}(t|T){2}(p|P){1}(s|S)?://'); // http:// and https://
-  originalUrl = originalUrl.replace(regex, '');
-
-  //check if url exist
-  db.Url.find({ originalUrl })
-        .then((url) => {
-          // if exists 
-          if(url.length) {
-            let { originalUrl, shortUrl } = url[0];
-            res.status(201).json({ originalUrl, shortUrl });
-          }
-          else {
-            db.Url.find()
-              .then((urls) => { 
-                let shortUrl = urls.length + 1;
-                let data = {
-                  originalUrl,
-                  shortUrl
-                }
-                //add url      
-                return db.Url.create(data);
-              })
-              .then((newUrl) => {
-                let { originalUrl, shortUrl } = newUrl;
-                res.status(201).json({ originalUrl, shortUrl })
-              })
-              .catch(error);
-          }
-        })
-        .catch(error);
+  let regex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/; //regex to validate url
+  
+  //check if its a valid url
+  if(originalUrl.search(regex) > -1) {
+    //check if url exist
+    db.Url.find({ originalUrl })
+          .then((url) => {
+            // if exists 
+            if(url.length) {
+              let { originalUrl, shortUrl } = url[0];
+              res.status(201).json({ originalUrl, shortUrl });
+            }
+            else {
+              db.Url.find()
+                .then((urls) => { 
+                  let shortUrl = urls.length + 1;
+                  let data = {
+                    originalUrl,
+                    shortUrl
+                  }
+                  //add url      
+                  return db.Url.create(data);
+                })
+                .then((newUrl) => {
+                  let { originalUrl, shortUrl } = newUrl;
+                  res.status(201).json({ originalUrl, shortUrl })
+                })
+                .catch(error);
+            }
+          })
+          .catch(error);
+  } else {
+    res.status(404).json({"error":"invalid shortURL"});
+  }
 });
 
 //error
