@@ -15,7 +15,7 @@ router.get('/:shortUrl', (req, res) => {
         res.status(404).json({"error":"invalid shortURL"});
       }
     })
-    .catch(error);
+    .catch((err) => res.send(`Oops, something went wrong -> ${err}`));
 });
 
 router.post('/new', (req, res) => {
@@ -47,18 +47,13 @@ router.post('/new', (req, res) => {
                   let { originalUrl, shortUrl } = newUrl;
                   res.status(201).json({ originalUrl, shortUrl })
                 })
-                .catch(error);
+                .catch((err) => res.send(`Oops, something went wrong -> ${err}`));
             }
           })
-          .catch(error);
+          .catch((err) => res.send(`Oops, something went wrong -> ${err}`));
   } else {
     res.status(404).json({"error":"invalid shortURL"});
   }
 });
-
-//error
-function error(err) {
-  res.send(`Oops, something went wrong -> ${err}`);
-}
 
 module.exports = router;
