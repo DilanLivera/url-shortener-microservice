@@ -20,6 +20,8 @@ router.get('/:shortUrl', (req, res) => {
 
 router.post('/new', (req, res) => {
   let originalUrl = req.body.url;
+  let regex = new RegExp('(h|H){1}(t|T){2}(p|P){1}(s|S)?://'); // http:// and https://
+  originalUrl = originalUrl.replace(regex, '');
 
   //check if url exist
   db.Url.find({ originalUrl })
