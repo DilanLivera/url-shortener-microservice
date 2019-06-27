@@ -8,12 +8,30 @@
   <link rel="stylesheet" href="/stylesheets/styles.css">
 </head>
 <body>
-  <h1>URL Shortener Microservice</h1>
-  <div class ="form-container">
-    <form action="/api/shorturl/new" method="post">
-      <input type="text" name="url" placeholder = "url" size="30">
-      <input type="submit" value="Post">
-    </form>
-  </div>
+  <header>
+    <h1>URL Shortener Microservice</h1>
+    <h3><a href="https://learn.freecodecamp.org/apis-and-microservices/apis-and-microservices-projects/url-shortener-microservice/"><span class="freecodecamp">freeCodeCamp</span> API Project</a></h3>
+  </header>
+  <main>
+    <h3>About</h3>
+    <p>This is a simple URL Shortener Microservice built with Express.</p>
+
+    <h3>How to use</h3>
+    <p>POST a URL to <code>indigo-tiglon.glitch.me/api/shorturl/new</code> and API will return a shortened URL in the JSON response.</p>
+    <p><code>{"original_url":"www.google.com","short_url":1}</code></p>
+    <p>If a invalid URL that doesn't follow <code>http(s)://www.example.com(/more/routes)</code> format send to the API, the JSON response will contain an error like <code>{"error":"invalid URL"}</code></p>
+    <p>Visiting the shortened URL, will redirect you to the original link.</p>
+    <div class ="form-container">
+      <h3>Create a Short URL</h3>
+      <form action="/api/shorturl/new" method="post">
+        <input type="text" name="url" placeholder = "url" size="30">
+        <input type="submit" value="Post">
+      </form>
+    </div>    
+  </main>
+
+  <footer>
+    Made with <a href="https://glitch.com">Glitch</a>!
+  </footer>
 </body>
 </html>

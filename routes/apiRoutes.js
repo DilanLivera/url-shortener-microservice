@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require("../models");
+const dns = require('dns');
 
 router.get('/:shortUrl', (req, res) => {
   let shortUrl = req.params.shortUrl;
@@ -21,6 +22,10 @@ router.get('/:shortUrl', (req, res) => {
 router.post('/new', (req, res) => {
   let originalUrl = req.body.url;
   let regex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/; //regex to validate url
+
+  // dns.lookup('www.google.com.au/imghp', (err, address, family) => {
+  //   console.log(`${address} -:- ${family}`);
+  // });
   
   //check if its a valid url
   if(originalUrl.search(regex) > -1) {

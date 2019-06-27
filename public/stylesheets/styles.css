@@ -1,12 +1,106 @@
 body {
-  background-color: lightblue;
+  font-family: 'Roboto', sans-serif;
+  margin: 2em;
 }
 
-h1 {
+header, footer, main {
+  width: 60%;
+  margin: 0 auto;
+}
+
+header, main, footer {
   text-align: center;
+}
+
+header > h1 {
+  font-weight: 100;
+}
+
+header > h3, a {
+  color: grey;
+  font-weight: 100;
+}
+
+header a {
+  text-decoration: none;
+}
+
+header a:hover{  
+  cursor: pointer;
+  display: block;
+  transform: scale(1.05);
+}
+
+.freecodecamp{
+  color: green;
+}
+
+main {
+  padding-top: 100px;
+  padding-bottom: 200px;
+}
+
+main > h3 {
+  text-align: left;
+}
+
+main  > p {
+  text-align: justify;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+
+main > h3 {
+  padding-top: 30px;
+}
+
+code {
+  word-wrap: break-word;
+  font-family: monospace;
+  padding: 2px;
+  color: black;
+  background-color: #fff;
+  font-weight: 600;
 }
 
 .form-container {
   display: inline;
   text-align: center;
+}
+
+footer {    
+  margin-top: 10px;
+  padding-top: 15px;
+  border-top: 1px solid lightgrey;
+  font-size: 12px;
+}
+
+@media screen and (max-width: 900px) {
+  header, footer, main {
+    width: 95%;
+  }
+
+  main {
+    padding-top: 10px;
+    padding-bottom: 20px;
+  }
+
+  main > h3 {
+    padding-top: 10px;
+  }  
+}
+
+@media screen and (min-width: 1200px) {
+  header, footer, main {
+    width: 85%;
+  }
+
+  main {
+    padding-top: 80px;
+    padding-bottom: 160px;
+  }
+
+  main > h3 {
+    padding-top: 10px;
+  }  
 }
