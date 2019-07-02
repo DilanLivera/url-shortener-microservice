@@ -15,9 +15,19 @@ app.get('/', (req, res) => {
 });
 
 //middlewear for errors
-app.use((req, res) => {
-  res.status(404).send('Page Not Found!!!');
-  res.status(500).send('Something broke!')
+app.use((req, res, next) => {
+  const error = new Error("Page Not Found!!!");
+  error.status(404);
+  next(error);
+});
+
+app.use((error, req, res, next) => {
+  res.status(error.status || 500)
+  res.json({
+    error: {
+      message: error.message
+    }
+  });
 });
 
 const listener = app.listen(PORT, () => console.log(`App is listening on port ${listener.address().port}`));
