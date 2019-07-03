@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const shortId = require('shortid');
 
 //create database schema
 const urlSchema = new mongoose.Schema({
@@ -7,8 +8,8 @@ const urlSchema = new mongoose.Schema({
         required: 'Url cannot be blank!'
     },
     shortUrl: {
-        type: Number,
-        default: 0
+        type: String,
+        default: shortId.generate
     }
 });
 

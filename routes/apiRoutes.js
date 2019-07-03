@@ -10,7 +10,7 @@ router.get('/:shortUrl', (req, res) => {
   db.Url.findOne({ shortUrl })
     .then((url) => {
       if(url) {
-        let { originalUrl } = url;      
+        let { originalUrl } = url;        
         res.redirect(`${originalUrl}`)
       } else {
         res.status(404).json({"error":"invalid shortURL"});
@@ -21,7 +21,7 @@ router.get('/:shortUrl', (req, res) => {
 
 router.post('/new', (req, res) => {
   let originalUrl = req.body.url;
-  let regex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/; //regex to validate url
+  let regex = /^(?:http(s)?:\/\/)+[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/; //regex to validate url
 
   // dns.lookup('www.google.com.au/imghp', (err, address, family) => {
   //   console.log(`${address} -:- ${family}`);
@@ -38,16 +38,11 @@ router.post('/new', (req, res) => {
               res.status(201).json({ originalUrl, shortUrl });
             }
             else {
-              db.Url.find()
-                .then((urls) => { 
-                  let shortUrl = urls.length + 1;
-                  let data = {
-                    originalUrl,
-                    shortUrl
-                  }
-                  //add url      
-                  return db.Url.create(data);
-                })
+              let data = {
+                originalUrl
+              }
+              //add url      
+              db.Url.create(data)
                 .then((newUrl) => {
                   let { originalUrl, shortUrl } = newUrl;
                   res.status(201).json({ originalUrl, shortUrl })
