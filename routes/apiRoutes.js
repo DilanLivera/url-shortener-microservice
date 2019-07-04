@@ -21,16 +21,19 @@ router.get('/:shortUrl', (req, res) => {
 
 router.post('/new', (req, res) => {
   let originalUrl = req.body.url;
-  let regex = /^(?:http(s)?:\/\/)+[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/; //regex to validate url
+  let validateUrlRegex = /^(?:http(s)?:\/\/)+[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/; //regex to validate url
+  let retrieveSiteRegex = /[\w.-]+(?:\.[\w\.-]+)+/g;
+  let site = originalUrl.match(retrieveSiteRegex)[0];
 
-  // dns.lookup('www.google.com.au/imghp', (err, address, family) => {
-  //   console.log(`${address} -:- ${family}`);
-  // });
-  
   //check if its a valid url
-  if(originalUrl.search(regex) > -1) {
-    //check if url exist
-    db.Url.find({ originalUrl })
+  if(originalUrl.search(validateUrlRegex) > -1) {
+    //check if its a valid site
+    dns.lookup(site, (err, address, family) => {
+      //if site address exists 
+      if(address) {
+        //check if the url exists in the database
+        db.Url
+          .find({ originalUrl })
           .then((url) => {
             // if exists 
             if(url.length) {
@@ -51,8 +54,10 @@ router.post('/new', (req, res) => {
             }
           })
           .catch((err) => res.send(`Oops, something went wrong -> ${err}`));
+      }
+    });
   } else {
-    res.status(404).json({"error":"invalid shortURL"});
+    res.status(404).json({"error":"invalid URL"});
   }
 });
 
